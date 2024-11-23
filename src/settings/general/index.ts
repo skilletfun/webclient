@@ -15,12 +15,14 @@ import rootDirSettings from './root-dirs'
 import separators from './separators'
 import sidebarSettings from './sidebar'
 import tracks from './tracks'
+import playlists from './playlists'
 // icons
 import AlbumSvg from '@/assets/icons/album.svg?raw'
 import AvatarSvg from '@/assets/icons/artist.svg?raw'
 import FolderSvg from '@/assets/icons/folder.svg?raw'
 import TrackSvg from '@/assets/icons/mic.svg?raw'
 import AppearanceSvg from '@/assets/icons/paintbrush.svg?raw'
+import PlaylistSvg from '@/assets/icons/playlist.svg?raw'
 
 const npStrings = strings.nowPlayingStrings
 const rootRootStrings = strings.manageRootDirsStrings
@@ -78,6 +80,14 @@ export const library = {
             icon: AvatarSvg,
             desc: 'Customize artist separators',
             settings: [separators],
+        },
+        {
+            // null means settings table is not created yet
+            show_if: () => useSettings().feat !== null,
+            title: 'Playlists',
+            icon: PlaylistSvg,
+            desc: 'Settings relative to playlist',
+            settings: [...playlists],
         },
         {
             title: "Backup",

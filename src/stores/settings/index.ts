@@ -62,6 +62,9 @@ export default defineStore('settings', {
         // stats
         statsgroup: "artists",
         statsperiod: "week",
+
+        // playlists
+        auto_shuffle: true,
     }),
     actions: {
         mapDbSettings(settings: DBSettings) {
