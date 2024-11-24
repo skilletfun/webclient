@@ -82,6 +82,8 @@ export default defineStore('settings', {
             this.periodicInterval = settings.scanInterval
             this.enableWatchDog = settings.enableWatchDog
 
+            this.auto_shuffle = settings.autoShuffle
+
             this.use_lyrics_plugin = settings.plugins.find(p => p.name === 'lyrics_finder')?.active
 
             if (this.use_lyrics_plugin) {
@@ -292,6 +294,10 @@ export default defineStore('settings', {
         },
         setStatsPeriod(period: string) {
             this.statsperiod = period
+        },
+        // playlists
+        toggleAutoShuffle() {
+            this.auto_shuffle = !this.auto_shuffle
         },
     },
     getters: {
