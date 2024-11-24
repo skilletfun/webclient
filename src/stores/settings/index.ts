@@ -62,6 +62,8 @@ export default defineStore('settings', {
         // stats
         statsgroup: "artists",
         statsperiod: "week",
+
+        auto_shuffle: true,
     }),
     actions: {
         mapDbSettings(settings: DBSettings) {
@@ -78,6 +80,8 @@ export default defineStore('settings', {
             this.enablePeriodicScans = settings.enablePeriodicScans
             this.periodicInterval = settings.scanInterval
             this.enableWatchDog = settings.enableWatchDog
+
+            this.auto_shuffle = settings.autoShuffle
 
             this.use_lyrics_plugin = settings.plugins.find(p => p.name === 'lyrics_finder')?.active
 
@@ -289,6 +293,10 @@ export default defineStore('settings', {
         },
         setStatsPeriod(period: string) {
             this.statsperiod = period
+        },
+        // playlists
+        toggleAutoShuffle() {
+            this.auto_shuffle = !this.auto_shuffle
         },
     },
     getters: {

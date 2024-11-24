@@ -15,6 +15,7 @@ import rootDirSettings from './root-dirs'
 import separators from './separators'
 import sidebarSettings from './sidebar'
 import tracks from './tracks'
+import queueSettings from './playing-queue'
 // icons
 import AlbumSvg from '@/assets/icons/album.svg?raw'
 import AvatarSvg from '@/assets/icons/artist.svg?raw'
@@ -40,6 +41,7 @@ export const general = {
                 ...contextChildrenShowMode,
                 ...folderlistmode,
                 ...nowPlaying,
+                ...queueSettings,
             ],
         },
     ],

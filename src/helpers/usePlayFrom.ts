@@ -33,12 +33,14 @@ export async function utilPlayFromArtist(index: number = 0) {
     const tracks = await getArtistTracks(artist.info.artisthash)
 
     tracklist.setFromArtist(artist.info.artisthash, artist.info.name, tracks)
+    if (settings.auto_shuffle) tracklist.shuffleList()
     queue.play(index)
 }
 
 export async function playFromAlbumCard(albumhash: string, albumname: string) {
     const queue = useQueue()
     const tracklist = useTracklist()
+    const settings = useSettingsStore()
 
     const tracks = await getAlbumTracks(albumhash)
 
@@ -48,6 +50,7 @@ export async function playFromAlbumCard(albumhash: string, albumname: string) {
     }
 
     tracklist.setFromAlbum(albumname, albumhash, tracks)
+    if (settings.auto_shuffle) tracklist.shuffleList()
     queue.play()
 }
 
@@ -55,6 +58,7 @@ export async function playFromArtistCard(artisthash: string, artistname: string)
     const queue = useQueue()
     const tracklist = useTracklist()
     const tracks = await getArtistTracks(artisthash)
+    const settings = useSettingsStore()
 
     if (tracks.length === 0) {
         useToast().showNotification('Artist tracks not found', NotifType.Error)
@@ -62,6 +66,7 @@ export async function playFromArtistCard(artisthash: string, artistname: string)
     }
 
     tracklist.setFromArtist(artisthash, artistname, tracks)
+    if (settings.auto_shuffle) tracklist.shuffleList()
     queue.play()
 }
 
@@ -71,6 +76,7 @@ export async function playFromFolderCard(folderpath: string) {
 
     const data = await getFiles(folderpath, 0, -1, true)
     const tracks = data.tracks
+    const settings = useSettingsStore()
 
     if (tracks.length === 0) {
         useToast().showNotification('Folder tracks not found', NotifType.Error)
@@ -78,6 +84,7 @@ export async function playFromFolderCard(folderpath: string) {
     }
 
     tracklist.setFromFolder(folderpath, tracks)
+    if (settings.auto_shuffle) tracklist.shuffleList()
     queue.play()
 }
 
@@ -97,6 +104,10 @@ export async function playFromFavorites(track: Track | undefined) {
 
     if (track) {
         index = tracklist.tracklist.findIndex(t => t.trackhash === track?.trackhash)
+    }
+    else {
+        const settings = useSettingsStore()
+        if (settings.auto_shuffle) tracklist.shuffleList()
     }
 
     console.log(tracklist.tracklist)
@@ -118,6 +129,8 @@ export async function playFromPlaylist(id: string, track?: Track) {
         const index = tracks.findIndex(t => t.trackhash === track.trackhash)
         queue.play(index)
     } else {
+        const settings = useSettingsStore()
+        if (settings.auto_shuffle) tracklist.shuffleList()
         queue.play()
     }
 }
@@ -125,12 +138,14 @@ export async function playFromPlaylist(id: string, track?: Track) {
 export const playFrom = async (source: playSources) => {
     const queue = useQueue()
     const tracklist = useTracklist()
+    const settings = useSettingsStore()
 
     switch (source) {
         case playSources.album: {
             const album = useAlbum()
 
             tracklist.setFromAlbum(album.info.title, album.info.albumhash, album.srcTracks)
+            if (settings.auto_shuffle) tracklist.shuffleList()
             queue.play()
             break
         }
@@ -144,6 +159,7 @@ export const playFrom = async (source: playSources) => {
                 await playlist.fetchAll(playlist.info.id, false, true)
             }
             tracklist.setFromPlaylist(playlist.info.name, playlist.info.id, playlist.tracks)
+            if (settings.auto_shuffle) tracklist.shuffleList()
             queue.play()
 
             break
